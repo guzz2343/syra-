@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0b0e">
+<meta name="description" content="SYRA — a cena do trap brasileiro: descobre sons, cria conexões e mostra teu trabalho em clipes curtos.">
+<title>SYRA — tua cena começa aqui</title>
+
+
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./clips.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+ <div><div class="brand">SYRA</div><div class="tag">Música. Conexões. Oportunidades.</div>
+ <nav class="nav" id="nav">
+ <button class="active" data-page="home">⌂ &nbsp; Início</button>
+ <button data-page="clips">▶ &nbsp; Clipes</button>
+ <button data-page="discover">✦ &nbsp; Descobrir</button>
+ <button data-page="music">♫ &nbsp; Música</button>
+ <button data-page="projects">◇ &nbsp; Projetos</button>
+ <button data-page="profile">◉ &nbsp; Meu perfil</button>
+ <button data-page="about">ⓘ &nbsp; Como funciona</button>
+ <button class="plus" data-page="publish">＋ Publicar</button>
+ </nav></div>
+ <div class="small">PRÉVIA • EM CONSTRUÇÃO</div>
+</aside>
+<main class="main">
+ <div class="topline"><div><div class="small">SYRA ORIGINAL • FEITO PRA CENA</div><div class="heading" id="pageTitle">Teu universo musical</div></div><div class="topActions"><span class="pill">PRÉVIA LOCAL</span><button class="ghost" onclick="showPage('about')">Como funciona</button><button class="btn" onclick="showPage('publish')">＋ Publicar</button></div></div>
+ <section id="content" aria-live="polite"></section>
+</main>
+<aside class="right">
+ <input class="search" id="search" placeholder="⌕  Buscar artistas, sons..." oninput="searchArtists(this.value)">
+ <div class="card"><div class="name">Descobrir artistas</div><div class="small">Gente nova pra conhecer</div>
+ <div class="artist"><div class="avatar alt">V</div><div><div class="name">vick.jpg</div><div class="small">Trap melódico • R&B</div></div><button class="btn" onclick="follow(this)">Seguir</button></div>
+ <div class="artist"><div class="avatar green">K</div><div><div class="name">kaio.wav</div><div class="small">Trap • Beatmaker</div></div><button class="btn" onclick="follow(this)">Seguir</button></div>
+ <div class="artist"><div class="avatar">L</div><div><div class="name">lua.exe</div><div class="small">Trap • R&B</div></div><button class="btn" onclick="follow(this)">Seguir</button></div></div>
+ <div class="card"><div class="name">Projetos em alta</div><div class="artist"><div class="cover">✦</div><div><div class="name">Capa para single</div><div class="small">Buscando designer</div></div></div><div class="artist"><div class="cover">♫</div><div><div class="name">EP colaborativo</div><div class="small">Buscando produtores</div></div></div><button class="btn" style="width:100%" onclick="showPage('projects')">Ver projetos</button></div>
+ </aside>
+</div>
+<nav class="bottomnav"><button class="active" onclick="showPage('home')"><span>⌂</span>Início</button><button onclick="showPage('clips')"><span>▶</span>Clipes</button><button onclick="showPage('discover')"><span>✦</span>Descobrir</button><button onclick="showPage('publish')"><span>＋</span>Publicar</button><button onclick="showPage('projects')"><span>◇</span>Projetos</button><button onclick="showPage('profile')"><span>◉</span>Perfil</button></nav>
+<script src="./clips.js"></script>
+<script src="./app.js"></script>
+
+</body></html>

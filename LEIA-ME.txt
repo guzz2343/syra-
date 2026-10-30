@@ -1,0 +1,57 @@
+SYRA — prévia estrutural em HTML, CSS e JavaScript (v3: feed de clipes verticais + foco em trap)
+
+FOCO EM TRAP (NOVO NA v3)
+- Textos, artistas, tags e projetos de exemplo agora são da cena de trap brasileiro: trap, trap melódico, trap funk, beatmakers e videomakers. Os nomes e números continuam fictícios.
+- Descobrir: os chips TRAP, TRAP MELÓDICO, TRAP FUNK, VIDEOMAKER e BEATMAKER filtram artistas e posts. A busca ignora acento, maiúscula e "#" (ex.: "trap melódico" acha "#trapmelodico") e entende cidade por extenso ("são paulo" acha artistas de SP).
+- Sem filtro, Descobrir mostra 6 artistas e os 3 posts mais recentes; com filtro, mostra todos os posts que combinam.
+- Pra trocar o foco depois, é só editar o texto: dados de exemplo em app.js (demoPosts, demoProjects e a lista de artistas em renderDiscover), textos das páginas em app.js e a descrição em index.html.
+
+ARQUIVOS
+- index.html: estrutura e navegação.
+- styles.css: identidade visual e layout responsivo.
+- clips.css: estilos do feed de clipes e correções de layout no celular.
+- app.js: páginas, conteúdo demonstrativo e interações locais.
+- clips.js: feed vertical de vídeos curtos (Clipes), trilho da Início e publicação de clipe.
+- clips/: 5 clipes verticais de teste (mp4 + imagem de capa). São gerados do zero, só pra testar o feed. Troque pelos clipes reais.
+
+ESTRUTURA DO SITE
+- Início: trilho "Clipes em alta", destaques da cena e feed.
+- Clipes (novo): feed vertical em tela cheia, estilo TikTok / Shorts / Reels.
+- Descobrir: busca por artista, estilo, cidade e publicações.
+- Música: faixas e prévias.
+- Projetos: oportunidades de colaboração e manifestação de interesse.
+- Meu perfil: perfil artístico editável e publicações próprias.
+- Como funciona: apresentação da proposta e caminhos principais.
+- Publicar: post de texto, demo de áudio ou clipe vertical.
+
+CLIPES — COMO FUNCIONA
+- Deslize (ou use as setas) pra mudar de clipe. Só o clipe visível toca; os vizinhos são pré-carregados.
+- Os clipes começam sem som (regra dos navegadores). Toque em 🔊 pra ligar; o som fica ligado nos próximos clipes.
+- Toque simples pausa. Duplo toque curte. Também dá pra curtir, comentar, seguir o artista e compartilhar o link do clipe.
+- Abas: "Para ti" (todos), "Seguindo" (artistas que você segue) e "Estreias" (clipes marcados com debut: true).
+- Atalhos no computador: seta pra cima/baixo (ou J/K) navega, espaço pausa, M liga o som, L curte, Esc fecha os comentários.
+- Links diretos: index.html#clips abre os clipes e index.html#clips/<id> abre um clipe específico. O botão Voltar do navegador também funciona.
+- Quem tem "reduzir movimento" ativado no sistema não recebe autoplay: o clipe espera o toque.
+
+PUBLICAR UM CLIPE
+Em Publicar > Clipe vertical: escolha o vídeo (de preferência vertical 9:16, até 90 s e 40 MB; MP4 H.264 é o formato mais compatível), escreva a legenda, marque que o som e o vídeo são seus e publique. O clipe entra como "Estreia na cena".
+
+ADICIONAR OS TEUS CLIPES DE EXEMPLO
+Coloque o mp4 e a capa (jpg) em clips/ e acrescente uma linha em demoPosts no app.js seguindo o modelo dos itens com kind: 'clip' (campos video e poster).
+
+LIMITES DA PRÉVIA
+Posts, perfis, curtidas, comentários, projetos e clipes ficam apenas neste navegador. Não aparecem para outras pessoas nem sincronizam entre dispositivos. Os clipes enviados pela pessoa ficam guardados no IndexedDB do navegador e somem se os dados do site forem apagados; nenhum arquivo é enviado a servidor. Ainda não existe como apagar um clipe enviado. Não há conversão de vídeo: se o navegador não abrir o formato do arquivo, o clipe não toca. A prévia de áudio de faixas só toca na sessão em que o arquivo foi selecionado. Artistas, posts e números de curtidas pré-carregados são fictícios. Não existe backend, streaming hospedado, sincronização, conta, login ou IA conectada. A regra de "Estreias" aqui é só uma marca nos dados, não um algoritmo de distribuição.
+
+PUBLICAR NA VERCEL
+1. Extraia o ZIP. Mantenha index.html, styles.css, clips.css, app.js, clips.js e a pasta clips/ juntos na raiz.
+2. Envie os arquivos para um repositório GitHub seu.
+3. No painel da Vercel, importe esse repositório.
+4. Escolha o preset Other. Deixe Build Command e Install Command vazios. Use a raiz do projeto e `.` como Output Directory caso seja solicitado.
+5. Faça o deploy. Não há dependências nem variáveis de ambiente.
+
+A versão publicada ainda será uma prévia local por navegador. Para tornar a comunidade pública e compartilhar conteúdo entre usuários, será necessário acrescentar backend, armazenamento e regras de acesso em outra etapa. Nessa etapa, o vídeo é a parte mais cara: armazenar, converter e entregar clipes exige serviço próprio de vídeo, e os termos de uso precisam exigir que o artista envie só música própria.
+
+CORREÇÕES NAS VERSÕES v2 E v3
+- v2: no celular, a barra lateral (que só mostra a logo) ocupava quase a tela inteira e empurrava o conteúdo pra baixo da dobra. Agora ela tem altura automática e a Início aparece logo na primeira tela.
+- v3: o filtro de artistas em Descobrir marcava a linha como escondida, mas o CSS a mantinha na tela, então a busca por artista não mudava nada. Agora a linha some de verdade.
+- v3: no desktop, os botões do topo ("Prévia local", "Como funciona", "Publicar") quebravam em duas linhas. Agora ficam numa linha só.

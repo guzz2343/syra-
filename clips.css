@@ -1,0 +1,245 @@
+/* =========================================================
+   SYRA · Clipes (feed vertical) + correções de layout mobile
+   Carregado depois de styles.css, então sobrescreve quando preciso.
+   ========================================================= */
+
+/* ---------- Correção mobile ----------
+   No celular a barra lateral só mostra a logo, mas o bloco "scene refresh"
+   do styles.css devolvia height:calc(100vh - 48px) e ela ocupava a tela
+   inteira, empurrando todo o conteúdo pra baixo da dobra. */
+@media (max-width: 620px) {
+  .sidebar { height: auto; position: static; }
+  .bottomnav {
+    box-sizing: border-box;
+    height: calc(62px + env(safe-area-inset-bottom));
+    padding: 8px 2px env(safe-area-inset-bottom);
+    align-items: center;
+  }
+  .bottomnav button { flex: 1; min-width: 0; font-size: 10.5px; }
+  .bottomnav button.active { color: var(--acid); }
+  /* botão Publicar em destaque no centro da barra */
+  .bottomnav button:nth-child(4) span {
+    width: 38px; height: 26px; display: grid; place-items: center;
+    background: var(--acid); color: #10110c; border-radius: 9px; font-weight: 900;
+  }
+  .bottomnav button:nth-child(4).active { color: #f6f5f1; }
+}
+
+button:focus-visible, .clipTap:focus-visible, .reelCard:focus-visible, .clipThumb:focus-visible,
+.clipsFeed:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+
+/* ---------- Palco e moldura do feed ---------- */
+.clipsStage { display: grid; justify-items: center; gap: 10px; padding: 2px 0 18px; }
+.clipsFrame {
+  position: relative; overflow: hidden; background: #000; isolation: isolate;
+  height: min(calc(100vh - 176px), 820px); aspect-ratio: 9 / 16; max-width: 100%;
+  border: 1px solid #303035; border-radius: 18px; box-shadow: 0 24px 60px #0006;
+}
+.clipHelp { font-size: 11px; color: #8d8c87; text-align: center; }
+.clipHelp kbd {
+  font: inherit; font-size: 10px; padding: 2px 6px; border-radius: 5px;
+  border: 1px solid #3a3a40; background: #16161a; color: #c9c8c3;
+}
+
+.clipsFeed {
+  position: relative; height: 100%; overflow-y: auto; overscroll-behavior: contain;
+  scroll-snap-type: y mandatory; scrollbar-width: none;
+}
+.clipsFeed::-webkit-scrollbar { display: none; }
+.clip { position: relative; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; background: #000; overflow: hidden; }
+.clip video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #0b0b0e; }
+.clipShade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, #000000d9 0, #00000066 28%, #0000 52%), linear-gradient(to bottom, #0000008c 0, #0000 20%);
+}
+.clipTap { position: absolute; inset: 0; z-index: 2; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+.clipFlash {
+  position: absolute; top: 50%; left: 50%; z-index: 3; width: 78px; height: 78px; margin: -39px 0 0 -39px;
+  display: grid; place-items: center; border-radius: 50%; background: #000a; color: #fff;
+  opacity: 0; transform: scale(.85); transition: opacity .18s, transform .18s; pointer-events: none;
+}
+.clipFlash svg { width: 36px; height: 36px; }
+.clip.paused .clipFlash, .clipFlash.show { opacity: 1; transform: scale(1); }
+.clipMsg {
+  position: absolute; z-index: 4; left: 18px; right: 18px; top: 42%; text-align: center; font-size: 13px;
+  padding: 14px; border-radius: 12px; background: #000b; border: 1px solid #ffffff22; color: #eee;
+}
+
+.clipBadge {
+  position: absolute; z-index: 4; top: 58px; left: 12px; font-size: 10px; font-weight: 850; letter-spacing: .1em;
+  color: var(--acid); background: #0009; border: 1px solid #c4ff3566; padding: 5px 8px; border-radius: 6px;
+}
+
+/* ---------- Abas e botão de publicar ---------- */
+.clipTabs {
+  position: absolute; z-index: 6; top: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 4px;
+  pointer-events: none;
+}
+.clipTabs button {
+  pointer-events: auto; background: none; border: 0; color: #ffffffb3; font-size: 14px; font-weight: 750;
+  padding: 8px 10px; text-shadow: 0 1px 8px #000; position: relative;
+}
+.clipTabs button[aria-pressed="true"] { color: #fff; }
+.clipTabs button[aria-pressed="true"]::after {
+  content: ''; position: absolute; left: 22%; right: 22%; bottom: 2px; height: 3px; border-radius: 2px; background: var(--acid);
+}
+.clipUp {
+  position: absolute; z-index: 6; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 11px; border: 0;
+  background: var(--acid); color: #10110c; font-size: 22px; font-weight: 900; line-height: 1;
+}
+
+/* ---------- Trilho de ações (direita) ---------- */
+.clipSide { position: absolute; z-index: 5; right: 8px; bottom: 88px; display: grid; gap: 14px; justify-items: center; }
+.clipAuthor { position: relative; margin-bottom: 6px; }
+.clipAuthor .avatar { width: 48px; height: 48px; margin: 0; border-width: 2px; }
+.followDot {
+  position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); width: 22px; height: 22px; border-radius: 50%;
+  border: 0; background: var(--acid); color: #10110c; font-size: 13px; font-weight: 900; line-height: 1; display: grid; place-items: center;
+}
+.followDot.on { background: #fff; }
+.clipBtn {
+  background: none; border: 0; color: #fff; display: grid; justify-items: center; gap: 3px;
+  font-size: 11px; font-weight: 750; text-shadow: 0 1px 6px #000;
+}
+.clipBtn .ico {
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: #16161bb8; border: 1px solid #ffffff22; backdrop-filter: blur(6px); transition: transform .12s;
+}
+.clipBtn:active .ico { transform: scale(.9); }
+.clipBtn svg { width: 24px; height: 24px; }
+.clipBtn svg path, .clipBtn svg circle { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.clipBtn.liked { color: var(--pink); }
+.clipBtn.liked .ico { border-color: var(--pink); }
+.clipBtn.liked svg path { fill: currentColor; }
+.clipBtn[aria-pressed="true"].sound { color: var(--acid); }
+
+/* ---------- Informações (baixo-esquerda) ---------- */
+.clipInfo { position: absolute; z-index: 5; left: 14px; right: 74px; bottom: 16px; text-shadow: 0 1px 8px #000; }
+.clipUser { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 15px; }
+.clipRole {
+  font-size: 9px; letter-spacing: .07em; text-transform: uppercase; font-weight: 850; padding: 3px 7px; border-radius: 20px;
+  color: var(--acid); background: #0008; border: 1px solid #c4ff3555;
+}
+.clipCaption {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-align: left;
+  background: none; border: 0; color: #f6f5f1; font-size: 13px; line-height: 1.45; padding: 0; margin: 0 0 8px; text-shadow: inherit;
+}
+.clipCaption[aria-expanded="true"] { -webkit-line-clamp: unset; max-height: 28vh; overflow-y: auto; }
+.clipInfo .taglist { margin-bottom: 9px; }
+.clipInfo .taglist span { background: #0007; border-color: #ffffff22; font-size: 10.5px; padding: 4px 7px; }
+.clipMusic {
+  display: inline-flex; align-items: center; gap: 8px; max-width: 100%; background: #0008; border: 1px solid #ffffff22;
+  color: #fff; border-radius: 20px; padding: 5px 11px 5px 6px; font-size: 11.5px; font-weight: 650; text-shadow: none;
+}
+.clipMusic span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.clipMusic .disc {
+  flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%;
+  background: var(--acid); color: #10110c; font-size: 12px; animation: spin 4s linear infinite;
+}
+.clip.paused .disc { animation-play-state: paused; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.clipProgress { position: absolute; z-index: 6; left: 0; right: 0; bottom: 0; height: 3px; background: #ffffff2e; }
+.clipProgress i { display: block; height: 100%; background: var(--acid); transform-origin: left; transform: scaleX(0); transition: transform .26s linear; }
+
+.burst { position: absolute; z-index: 7; width: 90px; height: 90px; margin: -45px 0 0 -45px; color: var(--pink); pointer-events: none; animation: burst .75s ease-out forwards; }
+.burst svg { width: 100%; height: 100%; }
+.burst path { fill: currentColor; }
+@keyframes burst {
+  0% { opacity: 0; transform: scale(.4) rotate(-12deg); }
+  25% { opacity: 1; transform: scale(1.1) rotate(6deg); }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.3) rotate(-4deg); }
+}
+
+/* ---------- Comentários (gaveta) ---------- */
+.clipSheet {
+  position: absolute; z-index: 9; left: 0; right: 0; bottom: 0; max-height: 72%; display: flex; flex-direction: column;
+  background: #131316; border-top: 1px solid #303035; border-radius: 16px 16px 0 0; box-shadow: 0 -20px 50px #0009;
+  transform: translateY(102%); visibility: hidden; transition: transform .24s ease, visibility 0s .24s;
+}
+.clipSheet.open { transform: none; visibility: visible; transition: transform .24s ease; }
+.sheetHead { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 8px; font-weight: 800; }
+.sheetHead button { background: #222226; border: 1px solid #38383d; color: #eee; width: 32px; height: 32px; border-radius: 50%; }
+.sheetList { overflow-y: auto; padding: 0 16px; flex: 1; min-height: 70px; }
+.sheetList .commentItem { font-size: 13px; margin: 11px 0; }
+.sheetEmpty { font-size: 12px; color: var(--muted); padding: 14px 0; }
+.sheetForm { display: flex; gap: 8px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid #ffffff10; }
+.sheetForm input { flex: 1; min-width: 0; background: #0b0b0e; color: #fff; border: 1px solid #37373d; border-radius: 9px; padding: 11px; }
+.sheetForm input:focus { outline: 1px solid var(--acid); border-color: var(--acid); }
+
+.clipEmpty { height: 100%; display: grid; place-content: center; justify-items: center; gap: 10px; text-align: center; padding: 0 28px; }
+.clipEmpty .heading { margin: 0; }
+
+/* ---------- Trilho de clipes na Home ---------- */
+.reel { display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 12px; margin-bottom: 4px; scroll-snap-type: x proximity; scrollbar-width: thin; }
+.reelCard {
+  position: relative; flex: 0 0 122px; aspect-ratio: 9 / 16; padding: 0; overflow: hidden; scroll-snap-align: start;
+  border: 1px solid #323237; border-radius: 12px; background: #151518; color: #fff; text-align: left;
+}
+.reelCard img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .25s; }
+.reelCard:hover img { transform: scale(1.04); }
+.reelCard::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #000d 0, #0000 55%); }
+.reelPlay {
+  position: absolute; z-index: 2; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: #000a; font-size: 10px; padding-left: 2px;
+}
+.reelMeta { position: absolute; z-index: 2; left: 9px; right: 9px; bottom: 8px; display: grid; gap: 1px; font-size: 11px; }
+.reelMeta b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reelMeta small { color: #ddd; font-size: 10px; }
+
+/* miniatura de clipe dentro de um post */
+.clipThumb {
+  position: relative; display: block; width: min(240px, 100%); aspect-ratio: 9 / 16; max-height: 430px; margin-top: 12px; padding: 0;
+  overflow: hidden; border-radius: 12px; border: 1px solid #323237; background: #000; color: #fff; text-align: left;
+}
+.clipThumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.clipThumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #000d 0, #0000 50%); }
+.clipThumb .reelPlay { width: 34px; height: 34px; font-size: 13px; }
+.clipThumbCap { position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 11px; display: grid; gap: 2px; }
+.clipThumbCap strong { font-size: 14px; letter-spacing: -.02em; }
+.clipThumbCap small { font-size: 11px; color: var(--acid); font-weight: 750; }
+
+/* ---------- Formulário de clipe ---------- */
+.clipPreview { width: min(220px, 100%); aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid #323237; margin: 4px 0 8px; }
+.clipPreview video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+.checkRow { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; line-height: 1.5; color: #dcdbd5; margin: 14px 0; }
+.checkRow input { margin-top: 3px; accent-color: var(--acid); width: 16px; height: 16px; flex: 0 0 auto; }
+.fieldHint { font-size: 11px; color: #cfcab0; background: #262418; border: 1px solid #514822; border-radius: 9px; padding: 9px 11px; margin-top: 6px; }
+
+/* Nos clipes o aviso (toast) sobe pro topo, pra não cobrir legenda, ações e o campo de comentário */
+body.clipsMode #syraToast { top: calc(62px + env(safe-area-inset-top)) !important; bottom: auto !important; }
+
+/* ---------- Modo clipes ---------- */
+@media (max-width: 900px) {
+  .clipsFrame { height: min(calc(100vh - 170px), 820px); }
+}
+@media (max-width: 620px) {
+  body.clipsMode { overflow: hidden; }
+  body.clipsMode .app { padding: 0; }
+  body.clipsMode .sidebar, body.clipsMode .topline, body.clipsMode .clipHelp { display: none; }
+  body.clipsMode .main { padding: 0; }
+  body.clipsMode #content { position: fixed; z-index: 3; top: 0; left: 0; right: 0; bottom: calc(62px + env(safe-area-inset-bottom)); }
+  body.clipsMode .clipsStage { height: 100%; padding: 0; gap: 0; }
+  body.clipsMode .clipsFrame { width: 100%; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; box-shadow: none; }
+  .clipTabs { top: calc(10px + env(safe-area-inset-top)); }
+  .clipUp { top: calc(8px + env(safe-area-inset-top)); }
+  .clipBadge { top: calc(56px + env(safe-area-inset-top)); }
+  .reelCard { flex-basis: 108px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clipFlash, .burst, .clipSheet, .clipProgress i, .reelCard img { transition: none; animation: none; }
+  .clipMusic .disc { animation: none; }
+}
+
+/* Estilos de subgênero clicáveis (Descobrir) */
+.heroTags .chipLink{font:inherit;font-size:10px;padding:6px 9px;border-radius:5px;background:#ffffff0d;color:#ddd;border:1px solid #ffffff12;cursor:pointer;letter-spacing:inherit}
+.heroTags .chipLink:hover{background:#c4ff3522;border-color:#c4ff3566;color:#fff}
+.heroTags .chipLink:focus-visible{outline:2px solid #c4ff35;outline-offset:2px}
+
+/* O atributo hidden precisa vencer display:flex/grid dos componentes (ex.: filtro de artistas em Descobrir) */
+[hidden]{display:none !important}
+
+/* Botões do topo não quebram linha no desktop */
+@media(min-width:621px){.topActions{flex-shrink:0}.topActions .pill,.topActions .btn,.topActions .ghost{white-space:nowrap}}
